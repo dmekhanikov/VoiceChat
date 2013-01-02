@@ -1,3 +1,5 @@
+# This file is generated automatically. Do not edit.
+# Use project properties -> Build -> Qt -> Expert -> Custom Definitions.
 TEMPLATE = app
 DESTDIR = dist/Release/GNU-Linux-x86
 TARGET = VoiceChat

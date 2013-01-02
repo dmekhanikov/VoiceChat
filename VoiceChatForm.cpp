@@ -1,5 +1,4 @@
 #include "VoiceChatForm.h"
-#include <stdio.h>
 
 VoiceChatForm::VoiceChatForm() {
 	widget.setupUi(this);
@@ -44,7 +43,6 @@ void VoiceChatForm::userConnected(QHostAddress IP, QString nickname) {
 }
 
 void VoiceChatForm::userDisconnected(QHostAddress IP) {
-	fprintf(stderr, "%s\n", IP.toString().toAscii().data());
 	users.erase(IP.toString());
 	updateUserList();
 }
