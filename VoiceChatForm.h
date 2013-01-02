@@ -11,15 +11,19 @@ public:
 	VoiceChatForm();
 	virtual ~VoiceChatForm();
 private:
+	QTimer updateTimer;
+	static const int UPDATE_PERIOD = 10;
+	
 	Ui::VoiceChatForm widget;
 	ChatClient chat;
 	std::map<QString, QString> users;
-	void updateUserList();
+	void updateUserListWidget();
 private slots:
 	void join();
 	void leave();
 	void userConnected(QHostAddress, QString);
 	void userDisconnected(QHostAddress);
+	void updateUsers();
 };
 
 #endif	/* _VOICECHATFORM_H */

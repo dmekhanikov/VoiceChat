@@ -6,6 +6,7 @@ VoiceChatForm::VoiceChatForm() {
 			this, SLOT(userConnected(QHostAddress, QString)));
 	connect(&chat, SIGNAL(userDisconnected(QHostAddress)),
 			this, SLOT(userDisconnected(QHostAddress)));
+	connect(&updateTimer, SIGNAL(timeout()), this, SLOT(updateUsers()));
 	connect(widget.connectButton, SIGNAL(clicked()), this, SLOT(join()));
 	connect(widget.disconnecButton, SIGNAL(clicked()), this, SLOT(leave()));
 }
@@ -14,7 +15,7 @@ VoiceChatForm::~VoiceChatForm() {
 	chat.leave();
 }
 
-void VoiceChatForm::updateUserList() {
+void VoiceChatForm::updateUserListWidget() {
 	widget.userList->clear();
 	for (std::map<QString, QString>::const_iterator iter = users.begin();
 			iter != users.end(); ++iter) {
@@ -27,6 +28,7 @@ void VoiceChatForm::join() {
 	widget.nicknameEdit->setReadOnly(true);
 	widget.connectButton->setEnabled(false);
 	widget.disconnecButton->setEnabled(true);
+	updateTimer.start(UPDATE_PERIOD * 1000);
 }
 
 void VoiceChatForm::leave() {
@@ -35,14 +37,21 @@ void VoiceChatForm::leave() {
 	widget.connectButton->setEnabled(true);
 	widget.disconnecButton->setEnabled(false);
 	widget.userList->clear();
+	updateTimer.stop();
 }
 
 void VoiceChatForm::userConnected(QHostAddress IP, QString nickname) {
 	users[IP.toString()] = nickname;
-	updateUserList();
+	updateUserListWidget();
 }
 
 void VoiceChatForm::userDisconnected(QHostAddress IP) {
 	users.erase(IP.toString());
-	updateUserList();
+	updateUserListWidget();
+}
+
+void VoiceChatForm::updateUsers() {
+	users.clear();
+	chat.updateUserList();
+	updateTimer.start(UPDATE_PERIOD * 1000);
 }

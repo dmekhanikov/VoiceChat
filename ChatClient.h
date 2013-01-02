@@ -21,7 +21,6 @@ class ChatClient : public QObject {
 	QString BYE;
 	QString AUDIO;
 	static const int SEND_PERIOD = 100;
-	static const int UPDATE_PERIOD = 60;
 	
 private slots:
 	void processPendingDatagrams();
