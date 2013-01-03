@@ -29,15 +29,15 @@ private slots:
 	
 public:
 	ChatClient();
-	void join(QString);
+	void join(const QString&);
 	void leave();
 	void startSendingAudio();
 	void stopSendingAudio();
 	void updateUserList();
 	
 signals:
-	void userConnected(QHostAddress IP, QString nickname);
-	void userDisconnected(QHostAddress IP);
+	void userConnected(const QHostAddress &IP, const QString &nickname);
+	void userDisconnected(const QHostAddress &IP);
 };
 
 #endif	/* CHATCLIENT_H */

@@ -2,20 +2,22 @@
 
 VoiceChatForm::VoiceChatForm() {
 	widget.setupUi(this);
-	connect(&chat, SIGNAL(userConnected(QHostAddress, QString)),
-			this, SLOT(userConnected(QHostAddress, QString)));
-	connect(&chat, SIGNAL(userDisconnected(QHostAddress)),
-			this, SLOT(userDisconnected(QHostAddress)));
+	connect(&chat, SIGNAL(userConnected(const QHostAddress&, const QString&)),
+			this, SLOT(userConnected(const QHostAddress&, const QString&)));
+	connect(&chat, SIGNAL(userDisconnected(const QHostAddress&)),
+			this, SLOT(userDisconnected(const QHostAddress&)));
 	connect(&updateTimer, SIGNAL(timeout()), this, SLOT(updateUsers()));
 	connect(widget.connectButton, SIGNAL(clicked()), this, SLOT(join()));
 	connect(widget.disconnecButton, SIGNAL(clicked()), this, SLOT(leave()));
+	connect (widget.nicknameEdit, SIGNAL(textChanged(const QString&)), 
+			this, SLOT(nicknameEditTextChanged(const QString&)));
 }
 
 VoiceChatForm::~VoiceChatForm() {
 	chat.leave();
 }
 
-void VoiceChatForm::addUserToListWidget(QString nickname) {
+void VoiceChatForm::addUserToListWidget(const QString &nickname) {
 	int l = -1, r = widget.userList->count(), mid;
 	while (r - l > 1) {
 		mid = l + (r - l) / 2;
@@ -28,7 +30,7 @@ void VoiceChatForm::addUserToListWidget(QString nickname) {
 	widget.userList->insertItem(r, nickname);
 }
 
-void VoiceChatForm::deleteUserFromListWidget(QString nickname) {
+void VoiceChatForm::deleteUserFromListWidget(const QString &nickname) {
 	int l = -1, r = widget.userList->count(), mid;
 	while (r - l > 1) {
 		mid = l + (r - l) / 2;
@@ -61,7 +63,7 @@ void VoiceChatForm::leave() {
 	updateTimer.stop();
 }
 
-void VoiceChatForm::userConnected(QHostAddress IP, QString nickname) {
+void VoiceChatForm::userConnected(const QHostAddress &IP, const QString &nickname) {
 	if (users.count(IP.toString())) {
 		deleteUserFromListWidget(nickname);
 	}
@@ -69,7 +71,7 @@ void VoiceChatForm::userConnected(QHostAddress IP, QString nickname) {
 	addUserToListWidget(nickname);
 }
 
-void VoiceChatForm::userDisconnected(QHostAddress IP) {
+void VoiceChatForm::userDisconnected(const QHostAddress &IP) {
 	std::map<QString, QString>::iterator iter = users.find(IP.toString());
 	if (iter != users.end()) {
 		deleteUserFromListWidget(iter->second);
@@ -83,3 +85,11 @@ void VoiceChatForm::updateUsers() {
 	chat.updateUserList();
 	updateTimer.start(UPDATE_PERIOD * 1000);
 }
+
+void VoiceChatForm::nicknameEditTextChanged(const QString& text) {
+	if (text.isEmpty()) {
+		widget.connectButton->setEnabled(false);
+	} else {
+		widget.connectButton->setEnabled(true);
+	}
+} 

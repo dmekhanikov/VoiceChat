@@ -4,5 +4,5 @@ To compile it do:
 	$ cd VoiceChat
 	$ mkdir build
 	$ cd build
-	$ qmake ../project.pro
+	$ qmake ../VoiceChat.pro
 	$ make

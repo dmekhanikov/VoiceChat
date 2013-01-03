@@ -10,12 +10,17 @@ ChatClient::ChatClient() {
 	connect(&sendTimer, SIGNAL(timeout()), this, SLOT(sendAudio()));
 }
 
-void ChatClient::join(QString nickname) {
+void ChatClient::join(const QString &nickname) {
 	myNickname = nickname;
 	if (udpSocket.state() == QUdpSocket::UnconnectedState) {
 		udpSocket.bind(PORT);
 	}
-	myAddress = QNetworkInterface::allAddresses().at(2);
+	QList<QHostAddress> addresses = QNetworkInterface::allAddresses();
+	int addrNo = 0;
+	while (!addresses.at(addrNo).toString().startsWith("192.168.")) {
+		++addrNo;
+	}
+	myAddress = QNetworkInterface::allAddresses().at(addrNo);
 	QString helloMessage = HELLO + nickname;
 	udpSocket.writeDatagram(helloMessage.toAscii(), QHostAddress::Broadcast, PORT);
 	udpSocket.writeDatagram(PING.toAscii(), QHostAddress::Broadcast, PORT);

@@ -18,14 +18,15 @@ private:
 	Ui::VoiceChatForm widget;
 	ChatClient chat;
 	std::map<QString, QString> users;
-	void addUserToListWidget(QString);
-	void deleteUserFromListWidget(QString);
+	void addUserToListWidget(const QString&);
+	void deleteUserFromListWidget(const QString&);
 private slots:
 	void join();
 	void leave();
-	void userConnected(QHostAddress, QString);
-	void userDisconnected(QHostAddress);
+	void userConnected(const QHostAddress&, const QString&);
+	void userDisconnected(const QHostAddress&);
 	void updateUsers();
+	void nicknameEditTextChanged(const QString&);
 };
 
 #endif	/* _VOICECHATFORM_H */

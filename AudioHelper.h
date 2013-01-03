@@ -20,8 +20,7 @@ public:
 	AudioHelper();
 	~AudioHelper();
 	QByteArray read();
-	void play(const QByteArray);
+	void play(const QByteArray&);
 };
 
 #endif	/* AUDIOHELPER_H */
-

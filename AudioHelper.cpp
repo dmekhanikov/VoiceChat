@@ -24,6 +24,6 @@ QByteArray AudioHelper::read() {
 	return res;
 }
 
-void AudioHelper::play(const QByteArray data) {
+void AudioHelper::play(const QByteArray &data) {
 	out->write(data, data.size() / format->frame_size());
 }
