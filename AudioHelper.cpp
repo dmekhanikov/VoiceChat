@@ -12,18 +12,18 @@ AudioHelper::~AudioHelper() {
 	delete out;
 }
 
-std::vector<char> AudioHelper::read() {
+QByteArray AudioHelper::read() {
 	size_t size = in->get_available();
 	if (size == 0) {
 		size = 1;
-	} else if (size > 8192) {
-		size = 8192;
+	} else if (size > MAX_AUDIO_SIZE) {
+		size = MAX_AUDIO_SIZE;
 	}
-	std::vector<char> res(size * in->get_format().frame_size());
-	in->read(&res[0], size);
+	QByteArray res(size * format->frame_size(), 0);
+	in->read(res.begin(), size);
 	return res;
 }
 
-void AudioHelper::play(const char *data, size_t size) {
-	out->write(data, size / in->get_format().frame_size());
+void AudioHelper::play(const QByteArray data) {
+	out->write(data, data.size() / format->frame_size());
 }

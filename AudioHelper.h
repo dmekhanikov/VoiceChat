@@ -7,21 +7,20 @@
 #include "soundio/speex_encoder.hpp"
 #include "soundio/speex_decoder.hpp"
 
-#include <vector>
+#include <QByteArray>
 
 class AudioHelper {
 	asound::global_config_cleanup cleanup;
 	frame_format *format;
 	input_device *in;
     output_device *out;
-	speex_encoder encoder;
-	speex_decoder decoder;
+	static const size_t MAX_AUDIO_SIZE = 8192;
 	
 public:
 	AudioHelper();
 	~AudioHelper();
-	std::vector<char> read();
-	void play(const char*, size_t size);
+	QByteArray read();
+	void play(const QByteArray);
 };
 
 #endif	/* AUDIOHELPER_H */

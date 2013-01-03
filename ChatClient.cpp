@@ -19,7 +19,7 @@ void ChatClient::join(QString nickname) {
 	QString helloMessage = HELLO + nickname;
 	udpSocket.writeDatagram(helloMessage.toAscii(), QHostAddress::Broadcast, PORT);
 	udpSocket.writeDatagram(PING.toAscii(), QHostAddress::Broadcast, PORT);
-	//startSendingAudio();
+	startSendingAudio();
 }
 
 void ChatClient::leave() {
@@ -55,16 +55,16 @@ void ChatClient::processPendingDatagrams() {
 			emit userDisconnected(sender);
 		} else if (sender != myAddress && datagram.startsWith(AUDIO.toAscii())) {
 			QByteArray audioSource = datagram.right(datagram.size() - AUDIO.size());
-			audio.play(audioSource.data(), audioSource.size());
+			audio.play(audioSource);
 		}
 	}
 }
 
 void ChatClient::sendAudio() {
-	std::vector<char> audioData = audio.read();
-	if (!audioData.empty()) {
+	QByteArray audioData = audio.read();
+	if (!audioData.isEmpty()) {
 		QByteArray audioMessage = AUDIO.toAscii();
-		audioMessage.append(QByteArray(&audioData[0], audioData.size()));
+		audioMessage.append(audioData);
 		udpSocket.writeDatagram(audioMessage, QHostAddress::Broadcast, PORT);
 	}
 }
