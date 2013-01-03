@@ -3,6 +3,7 @@
 
 #include "ui_VoiceChatForm.h"
 #include "ChatClient.h"
+
 #include <map>
 
 class VoiceChatForm : public QDialog {
@@ -12,12 +13,13 @@ public:
 	virtual ~VoiceChatForm();
 private:
 	QTimer updateTimer;
-	static const int UPDATE_PERIOD = 10;
+	static const int UPDATE_PERIOD = 100;
 	
 	Ui::VoiceChatForm widget;
 	ChatClient chat;
 	std::map<QString, QString> users;
-	void updateUserListWidget();
+	void addUserToListWidget(QString);
+	void deleteUserFromListWidget(QString);
 private slots:
 	void join();
 	void leave();

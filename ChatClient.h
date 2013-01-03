@@ -1,10 +1,11 @@
 #ifndef CHATCLIENT_H
 #define	CHATCLIENT_H
 
-#include <QUdpSocket>
-#include <QTimer>
-#include <QNetworkInterface>
 #include "AudioHelper.h"
+
+#include <QUdpSocket>
+#include <QNetworkInterface>
+#include <QTimer>
 
 class ChatClient : public QObject {
 	Q_OBJECT

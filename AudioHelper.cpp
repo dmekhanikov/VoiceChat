@@ -1,5 +1,4 @@
 #include "AudioHelper.h"
-#include <stdio.h>
 
 AudioHelper::AudioHelper() {
 	format = new frame_format(44100, 1, SOUNDIO_SAMPLE_FORMAT_S16);

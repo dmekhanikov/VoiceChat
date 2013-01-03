@@ -1,5 +1,4 @@
 #include "ChatClient.h"
-#include <stdio.h>
 
 ChatClient::ChatClient() {
 	PING = "PING";
@@ -47,7 +46,6 @@ void ChatClient::processPendingDatagrams() {
 		datagram.resize(udpSocket.pendingDatagramSize());
 		QHostAddress sender;
 		udpSocket.readDatagram(datagram.data(), datagram.size(), &sender);
-		fprintf(stderr, "%s\n", datagram.data());
 		if (datagram == PING) {
 			QString response = HELLO + myNickname;
 			udpSocket.writeDatagram(response.toAscii(), sender, PORT);

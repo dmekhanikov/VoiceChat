@@ -6,7 +6,6 @@
 #include "soundio/output_device.hpp"
 #include "soundio/speex_encoder.hpp"
 #include "soundio/speex_decoder.hpp"
-#include <speex/speex.h>
 
 #include <vector>
 
