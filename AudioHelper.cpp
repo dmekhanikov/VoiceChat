@@ -53,6 +53,7 @@ QByteArray AudioHelper::read() {
 	}
 	QByteArray res(size * format->frame_size(), 0);
 	in->read(res.begin(), size);
+	asound::global_config_cleanup cleanup;
 	return res;
 }
 

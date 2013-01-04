@@ -11,7 +11,6 @@
 #include <vector>
 
 class AudioHelper {
-	asound::global_config_cleanup cleanup;
 	frame_format *format;
 	input_device *in;
     output_device *out;
