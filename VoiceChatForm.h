@@ -13,7 +13,7 @@ public:
 	virtual ~VoiceChatForm();
 private:
 	QTimer updateTimer;
-	static const int UPDATE_PERIOD = 100;
+	static const int UPDATE_PERIOD = 60;
 	
 	Ui::VoiceChatForm widget;
 	ChatClient chat;

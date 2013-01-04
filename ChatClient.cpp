@@ -60,7 +60,7 @@ void ChatClient::processPendingDatagrams() {
 			emit userDisconnected(sender);
 		} else if (sender != myAddress && datagram.startsWith(AUDIO.toAscii())) {
 			QByteArray audioSource = datagram.right(datagram.size() - AUDIO.size());
-			audio.play(audioSource);
+			audio.play(audio.decode(audioSource));
 		}
 	}
 }
@@ -69,7 +69,7 @@ void ChatClient::sendAudio() {
 	QByteArray audioData = audio.read();
 	if (!audioData.isEmpty()) {
 		QByteArray audioMessage = AUDIO.toAscii();
-		audioMessage.append(audioData);
+		audioMessage.append(audio.encode(audioData));
 		udpSocket.writeDatagram(audioMessage, QHostAddress::Broadcast, PORT);
 	}
 }
