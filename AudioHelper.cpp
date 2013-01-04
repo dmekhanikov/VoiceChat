@@ -55,6 +55,7 @@ QByteArray AudioHelper::read() {
 	in->read(res.begin(), size);
 	asound::global_config_cleanup cleanup;
 	return res;
+	asound::global_config_cleanup cleanup;
 }
 
 void AudioHelper::play(const QByteArray &data) {
