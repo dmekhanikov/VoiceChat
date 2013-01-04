@@ -16,11 +16,14 @@ class AudioHelper {
     output_device *out;
 	speex_encoder *enc;
 	speex_decoder *dec;
+	asound::global_config_cleanup cleanup;
 	static const size_t MAX_AUDIO_SIZE = 5120;
 	
 public:
 	AudioHelper();
 	~AudioHelper();
+	void startRecording();
+	void stopRecording();
 	QByteArray encode(const QByteArray&);
 	QByteArray decode(const QByteArray&);
 	QByteArray read();

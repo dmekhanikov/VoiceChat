@@ -2,18 +2,30 @@
 
 AudioHelper::AudioHelper() {
 	format = new frame_format(44100, 1, SOUNDIO_SAMPLE_FORMAT_S16);
-    in = new input_device(*format);
-    out = new output_device(*format);
+    in = 0;
+	out = new output_device(*format);
 	enc = new speex_encoder(wideband_speex_profile, 5);
 	dec = new speex_decoder();
 }
 
 AudioHelper::~AudioHelper() {
 	delete format;
-	delete in;
 	delete out;
 	delete enc;
 	delete dec;
+	stopRecording();
+}
+
+void AudioHelper::startRecording() {
+	stopRecording();
+	in = new input_device(*format);
+}
+
+void AudioHelper::stopRecording() {
+	if (in != 0) {
+		delete in;
+		in = 0;
+	}
 }
 
 QByteArray AudioHelper::encode(const QByteArray& source) {
@@ -53,7 +65,6 @@ QByteArray AudioHelper::read() {
 	}
 	QByteArray res(size * format->frame_size(), 0);
 	in->read(res.begin(), size);
-	asound::global_config_cleanup cleanup;
 	return res;
 }
 

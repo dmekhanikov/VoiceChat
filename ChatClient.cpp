@@ -34,10 +34,12 @@ void ChatClient::leave() {
 }
 
 void ChatClient::startSendingAudio() {
+	audio.startRecording();
 	sendTimer.start(SEND_PERIOD);
 }
 
 void ChatClient::stopSendingAudio() {
+	audio.stopRecording();
 	sendTimer.stop();
 }
 

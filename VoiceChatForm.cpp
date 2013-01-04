@@ -40,7 +40,7 @@ void VoiceChatForm::deleteUserFromListWidget(const QString &nickname) {
 			r = mid;
 		}
 	}
-	if (l < widget.userList->count()) {
+	if (l >= 0 && widget.userList->item(l)->text() == nickname) {
 		delete widget.userList->takeItem(l);
 	}
 }
@@ -65,7 +65,7 @@ void VoiceChatForm::leave() {
 
 void VoiceChatForm::userConnected(const QHostAddress &IP, const QString &nickname) {
 	if (users.count(IP.toString())) {
-		deleteUserFromListWidget(nickname);
+		deleteUserFromListWidget(users[IP.toString()]);
 	}
 	users[IP.toString()] = nickname;
 	addUserToListWidget(nickname);
