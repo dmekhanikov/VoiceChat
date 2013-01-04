@@ -20,7 +20,7 @@ class AudioHelper : public QObject {
 	speex_encoder *enc;
 	speex_decoder *dec;
 	asound::global_config_cleanup cleanup;
-	static const size_t MAX_AUDIO_SIZE = 5120;
+	static const size_t MAX_AUDIO_SIZE = 10240;
 	std::map<QString, output_device*> users;
 	
 public:
