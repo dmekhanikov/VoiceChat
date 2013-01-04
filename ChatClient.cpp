@@ -8,6 +8,10 @@ ChatClient::ChatClient() {
 	connect(&udpSocket, SIGNAL(readyRead()),
 			this, SLOT(processPendingDatagrams()));
 	connect(&sendTimer, SIGNAL(timeout()), this, SLOT(sendAudio()));
+	connect(this, SIGNAL(userConnected(const QHostAddress&, const QString&)),
+			&audio, SLOT(userConnected(const QHostAddress&)));
+	connect(this, SIGNAL(userDisconnected(const QHostAddress&)),
+			&audio, SLOT(userDisconnected(const QHostAddress&)));
 }
 
 void ChatClient::join(const QString &nickname) {
@@ -62,7 +66,7 @@ void ChatClient::processPendingDatagrams() {
 			emit userDisconnected(sender);
 		} else if (sender != myAddress && datagram.startsWith(AUDIO.toAscii())) {
 			QByteArray audioSource = datagram.right(datagram.size() - AUDIO.size());
-			audio.play(audio.decode(audioSource));
+			audio.play(audio.decode(audioSource), sender.toString());
 		}
 	}
 }

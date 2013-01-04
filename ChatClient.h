@@ -36,8 +36,8 @@ public:
 	void updateUserList();
 	
 signals:
-	void userConnected(const QHostAddress &IP, const QString &nickname);
-	void userDisconnected(const QHostAddress &IP);
+	void userConnected(const QHostAddress&, const QString&);
+	void userDisconnected(const QHostAddress&);
 };
 
 #endif	/* CHATCLIENT_H */

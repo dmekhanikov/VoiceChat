@@ -8,16 +8,20 @@
 #include "soundio/speex_decoder.hpp"
 
 #include <QByteArray>
-#include <vector>
+#include <QHostAddress>
 
-class AudioHelper {
+#include <map>
+
+class AudioHelper : public QObject {
+	Q_OBJECT
+
 	frame_format *format;
 	input_device *in;
-    output_device *out;
 	speex_encoder *enc;
 	speex_decoder *dec;
 	asound::global_config_cleanup cleanup;
 	static const size_t MAX_AUDIO_SIZE = 5120;
+	std::map<QString, output_device*> users;
 	
 public:
 	AudioHelper();
@@ -27,7 +31,11 @@ public:
 	QByteArray encode(const QByteArray&);
 	QByteArray decode(const QByteArray&);
 	QByteArray read();
-	void play(const QByteArray&);
+	void play(const QByteArray&, const QString&);
+	
+public slots:
+	void userConnected(const QHostAddress&);
+	void userDisconnected(const QHostAddress&);
 };
 
 #endif	/* AUDIOHELPER_H */

@@ -3,17 +3,19 @@
 AudioHelper::AudioHelper() {
 	format = new frame_format(44100, 1, SOUNDIO_SAMPLE_FORMAT_S16);
     in = 0;
-	out = new output_device(*format);
 	enc = new speex_encoder(wideband_speex_profile, 5);
 	dec = new speex_decoder();
 }
 
 AudioHelper::~AudioHelper() {
 	delete format;
-	delete out;
 	delete enc;
 	delete dec;
 	stopRecording();
+	for (std::map<QString, output_device*>::iterator iter = users.begin();
+			iter != users.end(); ++iter) {
+		delete iter->second;
+	}
 }
 
 void AudioHelper::startRecording() {
@@ -68,6 +70,20 @@ QByteArray AudioHelper::read() {
 	return res;
 }
 
-void AudioHelper::play(const QByteArray &data) {
-	out->write(data, data.size() / format->frame_size());
+void AudioHelper::play(const QByteArray &data, const QString &IP) {
+	users[IP]->write(data, data.size() / format->frame_size());
+}
+
+void AudioHelper::userConnected(const QHostAddress &IP) {
+	if (users.count(IP.toString())) {
+		return;
+	}
+	users[IP.toString()] = new output_device(*format);
+}
+
+void AudioHelper::userDisconnected(const QHostAddress &IP) {
+	if (users.count(IP.toString())) {
+		delete users[IP.toString()];
+		users.erase(IP.toString());
+	}
 }
