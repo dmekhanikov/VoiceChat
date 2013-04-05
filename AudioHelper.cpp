@@ -71,7 +71,9 @@ QByteArray AudioHelper::read() {
 }
 
 void AudioHelper::play(const QByteArray &data, const QString &IP) {
-	users[IP]->write(data, data.size() / format->frame_size());
+	if (users.count(IP) && users[IP] != 0) {
+		users[IP]->write(data, data.size() / format->frame_size());
+	}
 }
 
 void AudioHelper::userConnected(const QHostAddress &IP) {

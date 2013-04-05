@@ -9,8 +9,9 @@ VoiceChatForm::VoiceChatForm() {
 	connect(&updateTimer, SIGNAL(timeout()), this, SLOT(updateUsers()));
 	connect(widget.connectButton, SIGNAL(clicked()), this, SLOT(join()));
 	connect(widget.disconnecButton, SIGNAL(clicked()), this, SLOT(leave()));
-	connect (widget.nicknameEdit, SIGNAL(textChanged(const QString&)), 
+	connect(widget.nicknameEdit, SIGNAL(textChanged(const QString&)), 
 			this, SLOT(nicknameEditTextChanged(const QString&)));
+	connect(&chat, SIGNAL(noNetwork()), this, SLOT(leave()));
 }
 
 VoiceChatForm::~VoiceChatForm() {
@@ -46,11 +47,11 @@ void VoiceChatForm::deleteUserFromListWidget(const QString &nickname) {
 }
 
 void VoiceChatForm::join() {
-	chat.join(widget.nicknameEdit->text());
 	widget.nicknameEdit->setReadOnly(true);
 	widget.connectButton->setEnabled(false);
 	widget.disconnecButton->setEnabled(true);
 	updateTimer.start(UPDATE_PERIOD * 1000);
+	chat.join(widget.nicknameEdit->text());
 }
 
 void VoiceChatForm::leave() {

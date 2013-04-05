@@ -21,8 +21,13 @@ void ChatClient::join(const QString &nickname) {
 	}
 	QList<QHostAddress> addresses = QNetworkInterface::allAddresses();
 	int addrNo = 0;
-	while (!addresses.at(addrNo).toString().startsWith("192.168.")) {
+	while (addrNo < addresses.size() && 
+			!addresses.at(addrNo).toString().startsWith("192.168.")) {
 		++addrNo;
+	}
+	if (addrNo == addresses.size()) {
+		emit noNetwork();
+		return;
 	}
 	myAddress = QNetworkInterface::allAddresses().at(addrNo);
 	QString helloMessage = HELLO + nickname;

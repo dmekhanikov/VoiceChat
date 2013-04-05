@@ -38,6 +38,7 @@ public:
 signals:
 	void userConnected(const QHostAddress&, const QString&);
 	void userDisconnected(const QHostAddress&);
+	void noNetwork();
 };
 
 #endif	/* CHATCLIENT_H */
